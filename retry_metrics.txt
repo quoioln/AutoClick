@@ -1,0 +1,6 @@
+=== Antigravity Auto-Retry Metrics ===
+Last updated: 2026-04-21 00:12:32
+Total Retries: 13
+
+--- Per-Window Breakdown ---
+  13x | nexus-attendance - Antigravity - Implementation Plan

@@ -1,0 +1,14 @@
+{
+  "scan_interval_seconds": 3,
+  "confidence": 0.8,
+  "click_delay_seconds": 0.5,
+  "max_retries_per_session": 0,
+  "hotkey_toggle": "F6",
+  "hotkey_quit": "F7",
+  "sound_enabled": true,
+  "log_file": "autoclick.log",
+  "button_images": [
+    "images/retry_button.png",
+    "images/retry_button_hover.png"
+  ]
+}
