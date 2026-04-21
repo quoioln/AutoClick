@@ -26,8 +26,13 @@ import sys
 import time
 import threading
 import logging
-import winsound
 from datetime import datetime
+
+try:
+    import winsound
+    HAS_WINSOUND = True
+except ImportError:
+    HAS_WINSOUND = False
 from pathlib import Path
 
 # Tắt fail-safe nếu cần (cẩn thận!)
@@ -138,20 +143,32 @@ class AntigravityAutoRetry:
 
     def play_sound(self, sound_type="click"):
         """Play notification sound."""
-        if not self.config["sound_enabled"]:
+        if not self.config.get("sound_enabled", True):
             return
-        try:
-            if sound_type == "click":
-                # Beep: frequency=1000Hz, duration=200ms
-                winsound.Beep(1000, 200)
-            elif sound_type == "start":
-                winsound.Beep(800, 150)
-                winsound.Beep(1200, 150)
-            elif sound_type == "stop":
-                winsound.Beep(1200, 150)
-                winsound.Beep(800, 150)
-        except Exception:
-            pass
+            
+        if HAS_WINSOUND:
+            try:
+                if sound_type == "click":
+                    winsound.Beep(1000, 200)
+                elif sound_type == "start":
+                    winsound.Beep(800, 150)
+                    winsound.Beep(1200, 150)
+                elif sound_type == "stop":
+                    winsound.Beep(1200, 150)
+                    winsound.Beep(800, 150)
+            except Exception:
+                pass
+        elif sys.platform == "darwin":
+            # Native macOS sounds using afplay
+            try:
+                if sound_type == "click":
+                    os.system("afplay /System/Library/Sounds/Ping.aiff &")
+                elif sound_type == "start":
+                    os.system("afplay /System/Library/Sounds/Glass.aiff &")
+                elif sound_type == "stop":
+                    os.system("afplay /System/Library/Sounds/Basso.aiff &")
+            except Exception:
+                pass
 
     def find_retry_button(self):
         """Tìm nút Retry trên màn hình."""

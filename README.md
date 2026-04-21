@@ -42,34 +42,61 @@ Hơn nữa, chế độ Win32 UI Automation không hoạt động trên MacOS, b
    ./build_mac.sh
    ```
 4. Tool sẽ được build thành file thực thi tại `dist/autoclick`.
-5. Đừng quên chạy `python3 capture_button.py` để chụp ảnh nút Retry trên giao diện của Mac trước khi bật chạy! Đồng thời bạn cần cấp quyền "Accessibility" và "Screen Recording" cho Terminal/App trong máy Mac.
+5. Đừng quên chạy `python3 capture_button.py` để chụp ảnh nút Retry trên giao diện của Mac trước khi bật chạy!
+
+### 🍎 Hướng dẫn Cấp Quyền (Bắt buộc trên macOS)
+
+Do giới hạn bảo mật khắt khe của hệ điều hành Mac, tool AutoClick cần quyền **"Nhìn màn hình"** (để quét hình ảnh nút Retry) và quyền **"Điều khiển chuột"** (để click nút). Bạn bắt buộc phải cấu hình:
+
+1. Mở **System Settings** (Cài đặt hệ thống) ➔ **Privacy & Security** (Quyền riêng tư & Bảo mật).
+2. **Cấp quyền ghi màn hình (Screen Recording):**
+   - Click vào `Screen Recording`.
+   - Bấm dấu `+` và thêm ứng dụng bạn đang dùng để chạy lệnh (ví dụ: `Terminal`, `iTerm`, hoặc IDE đang chạy file).
+   - *Lưu ý: Nếu bạn chạy tool bằng `.app` hoặc `.exe` được build ra, bạn phải cấp quyền cho cái file thư mục đó.*
+3. **Cấp quyền điều khiển chuột (Accessibility / Trợ năng):**
+   - Vẫn trong màn hình `Privacy & Security`, click vào `Accessibility`.
+   - Bấm dấu `+` và thêm tương tự như trên (Terminal / iTerm).
+4. *(Nếu ứng dụng đã bật sẵn, hãy tắt đi và mở lại để hệ thống nhận quyền mới nhé).*
 
 ---
 
-## 🚀 Sử dụng
+## 🚀 Chạy Trực Tiếp Bằng Môi Trường Python (Không cần build)
 
-### Cách 1: Win32 Mode (Khuyến nghị - không cần ảnh reference)
+Nếu bạn không muốn đóng gói `.exe` hay `.app`, bạn hoàn toàn có thể trỏ thẳng Terminal vào script Python để khởi chạy.
+
+### Dành cho Windows (Dashboard Đồ Họa Cao Cấp)
+
+Trên Windows, chúng ta sử dụng công nghệ UIA (User Interface Automation) để bắt siêu chính xác mã nguồn của phần mềm Antigravity mà không phụ thuộc vào ảnh màn hình. UI của tool là một Dashboard đồ họa theo dõi thời gian thực.
 
 ```bash
+# 1. Bật môi trường ảo (nếu có dùng uv)
+.venv\Scripts\activate
+
+# 2. Khởi chạy file dành riêng cho Windows
 python autoclick_win32.py
 ```
 
 **Ưu điểm:**
-- ✅ Không cần chụp ảnh nút trước
-- ✅ Hoạt động ở mọi theme, zoom level, resolution
-- ✅ Chính xác hơn (dùng UI Automation API)
+- ✅ Không cần chụp ảnh nút trước.
+- ✅ Giao diện đồ họa Dashboard Thời Gian Thực thân thiện dễ dùng.
+- ✅ Chính xác 100%, không bao giờ click nhầm nút Retry của web khác.
 
-### Cách 2: Image Matching Mode
+---
 
-**Bước 1:** Chụp ảnh nút Retry
+### Dành cho macOS (Chế độ Scan Ảnh Màn Hình)
+
+Khác với Windows, bảo mật của MacOS không cho phép chúng ta đọc mã nguồn Tree của các app Electron khác. Vì vậy Tool sẽ dùng thuật toán `Image Matching` để quyét màn hình tìm đúng nút Retry để click. Giao diện dạng Console.
+
+**Bước 1:** Chụp ảnh phác thảo nút Retry làm tư liệu nhận diện
 ```bash
-# Khi dialog lỗi đang hiển thị trên màn hình
-python capture_button.py
+# Khi dialog báo lỗi Antigravity đang hiển thị trên màn hình Mac
+python3 capture_button.py
 ```
+*(Bạn chỉ cần làm bước này một lần duy nhất. Kéo bôi đen đúng cái nút bấm Retry màu xanh)*
 
 **Bước 2:** Chạy auto-clicker
 ```bash
-python autoclick.py
+python3 autoclick.py
 ```
 
 ## ⌨️ Phím tắt

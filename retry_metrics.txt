@@ -1,6 +1,7 @@
 === Antigravity Auto-Retry Metrics ===
-Last updated: 2026-04-21 00:12:32
-Total Retries: 13
+Last updated: 2026-04-21 11:00:11
+Total Retries: 14
 
 --- Per-Window Breakdown ---
   13x | nexus-attendance - Antigravity - Implementation Plan
+   1x | autoclick - Antigravity - autoclick_win32.py
