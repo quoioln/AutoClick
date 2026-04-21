@@ -493,24 +493,28 @@ def main():
 
     clicker = AntigravityAutoRetry()
 
-    # Setup hotkeys
-    try:
-        import keyboard
+    # Setup hotkeys (Windows only - macOS requires sudo for global hotkeys)
+    if sys.platform != "darwin":
+        try:
+            import keyboard
 
-        hotkey_toggle = clicker.config["hotkey_toggle"]
-        hotkey_quit = clicker.config["hotkey_quit"]
+            hotkey_toggle = clicker.config["hotkey_toggle"]
+            hotkey_quit = clicker.config["hotkey_quit"]
 
-        keyboard.add_hotkey(hotkey_toggle, clicker.toggle)
-        keyboard.add_hotkey(
-            hotkey_quit,
-            lambda: (clicker.stop(), setattr(clicker, "running", False)),
-        )
+            keyboard.add_hotkey(hotkey_toggle, clicker.toggle)
+            keyboard.add_hotkey(
+                hotkey_quit,
+                lambda: (clicker.stop(), setattr(clicker, "running", False)),
+            )
 
-        print(f"  ⌨️  Hotkey: {hotkey_toggle} = Toggle, {hotkey_quit} = Quit")
-    except ImportError:
-        print("  ⚠️  Module 'keyboard' không có, hotkey bị tắt.")
-    except Exception as e:
-        print(f"  ⚠️  Không thể đăng ký hotkey: {e}")
+            print(f"  ⌨️  Hotkey: {hotkey_toggle} = Toggle, {hotkey_quit} = Quit")
+        except ImportError:
+            print("  ⚠️  Module 'keyboard' không có, hotkey bị tắt.")
+        except Exception as e:
+            print(f"  ⚠️  Không thể đăng ký hotkey: {e}")
+    else:
+        print("  ℹ️  Global Hotkeys đã bị vô hiệu hóa trên Mac (Do yêu cầu root/sudo).")
+        print("      Bạn hãy dùng lệnh ở Terminal (gõ chữ 's' rồi Enter) để tương tác nhé!")
 
     # Try to create tray icon
     tray_icon = create_tray_icon(clicker)
